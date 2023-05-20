@@ -1,0 +1,9 @@
+
+###saveNumber
+Post http://localhost:2400/auth1/register
+
+Content-Type: application/json
+
+{
+    "mobile" : "09367109093"
+}
