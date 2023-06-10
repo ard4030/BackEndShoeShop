@@ -27,7 +27,17 @@ const Schema = new mongoose.Schema({
           value:String
         }]
     }],
-    quantity : {type:Number , default:0}
+    quantity : {type:Number , default:0},
+    momentary : {type:Boolean , default:false},
+    discount : {type:Object , default :{
+      type : {type:String,default:'naghdi'},
+      value :{type:Number,default:0},
+      start_date:{type:Date},
+      end_date: {type:Date},
+      shegeft:{type:Boolean,default:false}
+    }}
+},{
+  timestamps:true
 });
 
 module.exports = {

@@ -135,6 +135,7 @@ class AuthController {
     async david(req,res,next){
         try {
             const deviceId = req.cookies['deviceId'];
+            
             if(!deviceId){
                 var newDeviceId = mongoose.Types.ObjectId();
                 const expiration = 24 * 60 * 60 * 100;

@@ -8,13 +8,13 @@ class CategoryController {
 
     async add(req,res,next){
         try {
-            let {title,parent} = req.body;
-            let result = await CategoryModel.findOne({title})
+            let {title,parent,image} = req.body;
+            let result = await CategoryModel.findOne({title,parent})
             if(result) throw {status:400,message:"این دسته بندی قبلا ایجاد شده"};
             if(parent == 0) {
-                result = await CategoryModel.create({title})
+                result = await CategoryModel.create({title,image})
             }else{
-                result = await CategoryModel.create({title,parent})
+                result = await CategoryModel.create({title,parent,image})
             }
             if(!result) throw {status:400,message:"افزودن دسته به مشکل مواجه شد"}
             return res.status(200).json({
@@ -30,13 +30,17 @@ class CategoryController {
 
     async editCategory(req,res,next){
         try {
-            const {title,parent,id} = req.body;
-            let result = null;
-            if(parent === undefined || parent === "" || parent === " "){
-                 result = await CategoryModel.updateOne({_id:id},{$set:{title}})
-            }else{
-                 result = await CategoryModel.updateOne({_id:id},{$set:{title,parent}})
-            }
+            const {title,parent,id,image} = req.body;
+            // let result = null;
+            // if(parent === undefined || parent === "" || parent === " "){
+            //      result = await CategoryModel.updateOne({_id:id},{$set:{title,image}})
+            // }else{
+            //      result = await CategoryModel.updateOne({_id:id},{$set:{title,parent,image}})
+            // }
+
+            const result = await CategoryModel.updateOne({_id:id},{$set:{
+                title,parent,image
+            }})
   
             if(result.modifiedCount == 0) throw {status:401,success:false,message:"دسته بندی پیدا نشد یا خطا در ویرایش"};
             return res.status(200).json({

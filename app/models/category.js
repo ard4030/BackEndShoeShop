@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const CategoryModel = new mongoose.Schema({
     title : {type : String,required : true},
     parent : {type : mongoose.Types.ObjectId,default:undefined , required:false},
+    image : {type : String,default : ""},
+    description : {type : String,default : ""},
 }, {
     toJSON: {virtuals:true},
     id:false,

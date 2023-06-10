@@ -20,6 +20,8 @@ class ProductController {
                 technicalSpecifications,
                 addonItem,
                 quantity,
+                momentary,
+                discount
             } = req.body;
             
             
@@ -36,6 +38,8 @@ class ProductController {
                         technicalSpecifications,
                         addonItem,
                         quantity,
+                        momentary,
+                        discount
                 }})
                 if(!result) throw ERRORING;
                 if (result.modifiedCount < 1) throw {status:400,success:false,message:"انجام شد"}
@@ -60,6 +64,8 @@ class ProductController {
                         technicalSpecifications,
                         addonItem,
                         quantity,
+                        momentary,
+                        discount
                     })      
                 }
                 return res.status(200).json({

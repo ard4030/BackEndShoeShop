@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = function (req, file, cb) {
   // Check if the file format is supported
-  const allowedFormats = ['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG','.webp','.WEBP'];
+  const allowedFormats = ['.jpg','.JPG','.jpeg','.JPEG','.png','.PNG','.webp','.WEBP','.gif','.GIF'];
   if (!allowedFormats.includes(path.extname(file.originalname))) {
     const error = new Error('فرمت فایل صحیح نیست');
     error.statusCode = 400;

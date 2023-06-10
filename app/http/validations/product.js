@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 
 function productValidator() {
     return [
-        body("p_name").isLength({min:2,max:25}).withMessage("نام فارسی حداقل 2 و حداکثر 50 کاراکتر"),
-        body("e_name").isLength({min:2,max:25}).withMessage("نام انگلیسی حداقل 2 و حداکثر 50 کاراکتر"),
+        body("p_name").isLength({min:2,max:100}).withMessage("نام فارسی حداقل 2 و حداکثر 50 کاراکتر"),
+        body("e_name").isLength({min:2,max:100}).withMessage("نام انگلیسی حداقل 2 و حداکثر 50 کاراکتر"),
         body("category").custom((value, ctx) => {
             if(!value) throw "دسته بندی نمی تواند خالی باشد";
             ObjectId = mongoose.Types.ObjectId;

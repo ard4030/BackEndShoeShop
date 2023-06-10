@@ -5,6 +5,7 @@ const { apisRouter } = require("./api");
 const { categoryRouter } = require("./category");
 const { discountRouter } = require("./discount");
 const { initialRouter } = require("./initial");
+const { optionRouter } = require("./option");
 const { orderRouter } = require("./order");
 const { paymentRouter } = require("./payment");
 const { postMethodRouter } = require("./postmethod");
@@ -24,6 +25,8 @@ router.use("/payment",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN]),paymentR
 router.use("/order",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN,ORDER]),orderRouter)
 router.use("/upload",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN]),uploadRouter)
 router.use("/apis",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN]),apisRouter)
+router.use("/option",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN]),optionRouter)
+
 
 module.exports = {
     AdminRoutes: router

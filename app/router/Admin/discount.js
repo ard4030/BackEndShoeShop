@@ -5,7 +5,9 @@ const { DiscountController } = require("../../http/controllers/Admin/discount.co
 
 router.post("/addDiscount",DiscountController.addDiscount)
 router.get("/getDiscounts",DiscountController.getDiscounts)
-
+router.post("/addProductDiscount",DiscountController.addProductDiscount)
+router.get("/getDiscountProducts",DiscountController.getDiscountProducts)
+router.post("/deleteDiscountProduct",DiscountController.deleteDiscountProduct)
 
 module.exports = {
     discountRouter : router
