@@ -176,74 +176,92 @@ class ProductController {
             const result = await ProductModel.aggregate([
                 { $match: { _id: Newid } },
                 {
-                    $lookup : {
-                        from:"comments",
-                        localField:"_id",
-                        foreignField:"productId",
-                        as:"com"
-                    }
+                  $lookup : {
+                    from:"comments",
+                    localField:"_id",
+                    foreignField:"productId",
+                    as:"com"
+                  }
                 },
                 {
-                    $unwind: "$com"
+                  $unwind: "$com"
                 },
                 {
-                    $group: {
-                        _id: "$_id",
-                        p_name: { $first: "$p_name" },
-                        e_name: { $first: "$e_name" },
-                        images: { $first: "$images" },
-                        category: { $first: "$category" },
-                        visit: { $first: "$visit" },
-                        description: { $first: "$description" },
-                        status: { $first: "$status" },
-                        technicalSpecifications: { $first: "$technicalSpecifications" },
-                        addonItem: { $first: "$addonItem" },
-                        quantity: { $first: "$quantity" },
-                        discount: { $first: "$discount" },
-                        momentary: { $first: "$momentary" },
-
-                        avgRate: { $avg: "$com.rate" },
-                        avgArzesh: { $avg: "$com.arzesh" },
-                        avgEmkanat: { $avg: "$com.emkanat" },
-                        avgKeyfiat: { $avg: "$com.keyfiat" },
-                        avgSohoolat: { $avg: "$com.sohoolat" },
-                        avgNoavari: { $avg: "$com.noavari" },
-                        
-                    }
+                  $lookup: {
+                    from: "users",
+                    localField: "com.userId",
+                    foreignField: "_id",
+                    as: "user"
+                  }
                 },
                 {
-                    $lookup : {
-                        from:"comments",
-                        localField:"_id",
-                        foreignField:"productId",
-                        as:"com1"
-                    }
+                  $group: {
+                    _id: "$_id",
+                    p_name: { $first: "$p_name" },
+                    e_name: { $first: "$e_name" },
+                    images: { $first: "$images" },
+                    category: { $first: "$category" },
+                    visit: { $first: "$visit" },
+                    description: { $first: "$description" },
+                    status: { $first: "$status" },
+                    technicalSpecifications: { $first: "$technicalSpecifications" },
+                    addonItem: { $first: "$addonItem" },
+                    quantity: { $first: "$quantity" },
+                    discount: { $first: "$discount" },
+                    momentary: { $first: "$momentary" },
+              
+                    comments: {
+                      $push: {
+                        _id: "$com._id",
+                        userId: "$com.userId",
+                        name: { $arrayElemAt: ["$user.firts_name", 0] },
+                        username: { $arrayElemAt: ["$user.username", 0] },
+                        message: "$com.message",
+                        rate: "$com.rate",
+                        arzesh: "$com.arzesh",
+                        emkanat: "$com.emkanat",
+                        keyfiat: "$com.keyfiat",
+                        sohoolat: "$com.sohoolat",
+                        noavari: "$com.noavari",
+                        ghovat: "$com.ghovat",
+                        zaf: "$com.zaf",
+                        createdAt: "$com.createdAt"
+                      }
+                    },
+              
+                    avgRate: { $avg: "$com.rate" },
+                    avgArzesh: { $avg: "$com.arzesh" },
+                    avgEmkanat: { $avg: "$com.emkanat" },
+                    avgKeyfiat: { $avg: "$com.keyfiat" },
+                    avgSohoolat: { $avg: "$com.sohoolat" },
+                    avgNoavari: { $avg: "$com.noavari" }
+                  }
                 },
                 {
-                    $project: {
-                        _id: 1,
-                        p_name: 1,
-                        e_name: 1,
-                        images: 1,
-                        category: 1,
-                        visit: 1,
-                        description: 1,
-                        status:1,
-                        technicalSpecifications:1,
-                        addonItem:1,
-                        quantity:1,
-                        discount:1,
-                        momentary:1,
-                        avgRate: 1,
-                        avgArzesh:1,
-                        avgEmkanat:1,
-                        avgKeyfiat:1,
-                        avgSohoolat:1,
-                        avgNoavari:1,
-                        commentCount: { $size: "$com1" }
-                    }
+                  $project: {
+                    _id: 1,
+                    p_name: 1,
+                    e_name: 1,
+                    images: 1,
+                    category: 1,
+                    visit: 1,
+                    description: 1,
+                    status: 1,
+                    technicalSpecifications: 1,
+                    addonItem: 1,
+                    quantity: 1,
+                    discount: 1,
+                    momentary: 1,
+                    avgRate: 1,
+                    avgArzesh: 1,
+                    avgEmkanat: 1,
+                    avgKeyfiat: 1,
+                    avgSohoolat: 1,
+                    avgNoavari: 1,
+                    comments: 1
+                  }
                 }
-            ]);
+              ]);
     
             if(result.length > 0){
                 if(ip || ip[0] !== ":" || ip !=="0"){ 

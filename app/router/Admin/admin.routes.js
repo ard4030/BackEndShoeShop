@@ -3,6 +3,7 @@ const { VerifyAccessToken } = require("../../http/middlewares/veryfyAccessToken"
 const { ADMIN, SUPERADMIN, ORDER } = require("../../utils/cdcdv");
 const { apisRouter } = require("./api");
 const { categoryRouter } = require("./category");
+const { commentRouter } = require("./comment");
 const { discountRouter } = require("./discount");
 const { initialRouter } = require("./initial");
 const { optionRouter } = require("./option");
@@ -26,6 +27,7 @@ router.use("/order",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN,ORDER]),orde
 router.use("/upload",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN]),uploadRouter)
 router.use("/apis",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN]),apisRouter)
 router.use("/option",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN]),optionRouter)
+router.use("/comment",VerifyAccessToken,requireRole([SUPERADMIN,ADMIN]),commentRouter)
 
 
 module.exports = {
