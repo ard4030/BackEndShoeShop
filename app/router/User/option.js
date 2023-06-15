@@ -5,6 +5,8 @@ const router = require("express").Router();
 router.get("/getSliderTop",OptionController.getSliderTop) 
 router.get("/getHome",OptionController.getHome) 
 router.post("/getArticleById",OptionController.getArticleById) 
+router.post("/addBookmark",VerifyAccessToken,OptionController.addBookmark) 
+
 
 
 

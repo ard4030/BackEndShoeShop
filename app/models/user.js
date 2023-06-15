@@ -17,7 +17,7 @@ const Schema = new mongoose.Schema({
     discount : {type:Number,default:0},
     birsday : {type:String},
     Roles : {type:[String] , default:['USER']},
-    bookmarks : {type : [String], default : []},
+    bookmarks : {type : [mongoose.Types.ObjectId], default : []},
 
 });
  

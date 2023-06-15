@@ -4,6 +4,7 @@ const { CategoryModel } = require("../../../models/category");
 const { OptionModel } = require("../../../models/option");
 const { ProductModel } = require("../../../models/product");
 const { SliderTopModel } = require("../../../models/slidertop");
+const { UserModel } = require("../../../models/user");
 const { ERRORING } = require("../../../utils/constans");
 
 class OptionController {
@@ -48,6 +49,7 @@ class OptionController {
             });
             
             if (Option && Option[1].value.slider_pro_enable){
+
                 ProSlider = await ProductModel.aggregate([
                     {
                       $graphLookup: {
@@ -59,14 +61,52 @@ class OptionController {
                       }
                     },
                     {
-                      $match: {
-                        "subcategories._id": {$in: ids}
+                      $lookup: {
+                        from: "comments",
+                        let: { productId: "$_id" },
+                        pipeline: [
+                          {
+                            $match: {
+                              $expr: {
+                                $eq: ["$productId", "$$productId"]
+                              }
+                            }
+                          },
+                          {
+                            $group: {
+                              _id: "$productId",
+                              rate: { $avg: "$rate" }
+                            }
+                          }
+                        ],
+                        as: "rate"
                       }
                     },
                     {
-                        $limit: Option[1].value.slider_pro_number // تعداد محصولات مورد نظر
+                      $match: {
+                        "subcategories._id": { $in: ids }
+                      }
+                    },
+                    {
+                      $project: {
+                        _id: 1,
+                        p_name: 1,
+                        e_name: 1,
+                        category: 1,
+                        subcategories: 1,
+                        description: 1,
+                        priceAsli: 1,
+                        images: 1,
+                        rate: { $ifNull: [{ $arrayElemAt: ["$rate.rate", 0] }, 0] },
+                        status: 1,
+                        technicalSpecifications: 1,
+                        addonItem: 1,
+                        quantity: 1,
+                        discount: 1,
+                        momentary: 1,
+                      }
                     }
-                ]);
+                  ]);
             }
             ProSlider.forEach(element => {
                 let b;
@@ -121,6 +161,30 @@ class OptionController {
                 success:true,
                 data:result
             })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async addBookmark(req,res,next){
+        try {
+            const { productId } = req.body;
+            const user = await UserModel.findOne({ _id: req.user._id, bookmarks: productId });
+            if (user) {
+            await UserModel.updateOne({ _id: req.user._id }, { $pull: { bookmarks: productId } });
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: "محصول از علاقه مندی های شما حذف شد"
+            });
+            } else {
+            await UserModel.updateOne({ _id: req.user._id }, { $addToSet: { bookmarks: productId } });
+            return res.status(200).json({
+                status: 200,
+                success: true,
+                message: "محصول به علاقه مندی های شما اضافه شد"
+            });
+            }
         } catch (error) {
             next(error)
         }
