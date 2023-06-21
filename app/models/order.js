@@ -12,11 +12,18 @@ const Schema = new mongoose.Schema({
     success:{type:Boolean,default:false},
     userId : {type : mongoose.Types.ObjectId,default:undefined , required:true},
     addressId:{type : mongoose.Types.ObjectId,default:undefined , required:true},
-    postMethod:{type : mongoose.Types.ObjectId,default:undefined , required:true},
+    postMethod:{type : mongoose.Types.ObjectId,default:undefined },
     discount:{type:Object,default:null},
     status:{type:String,default:'pending'},
     step:{type:String,default:'addressOk'},
-    tracking_code:{type:String,default:''}
+    tracking_code:{type:String,default:''},
+    first_name:{type:String,default:''},
+    last_name:{type:String,default:''},
+    email:{type:String,default:''},
+    company:{type:String,default:''},
+    factor:{type:Boolean,default:false},
+    paymentMethod:{type : mongoose.Types.ObjectId,default:undefined , required:true},
+
 },{
     timestamps:true
 });

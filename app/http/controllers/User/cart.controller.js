@@ -68,7 +68,7 @@ class CartController {
     async addToCart(req,res,next){
         try {
             const deviceId = req.cookies['deviceId'];
-            const {p_name,e_name,productId,price,addonItem} = req.body;
+            const {productId,addonItem} = req.body;
 
             const xxx = await ProductModel.findOne({_id:productId})
             let senitems = [];
@@ -88,7 +88,6 @@ class CartController {
                 })
             })
 
-
             const isHere = await CartModel.findOne({
                 deviceId,productId,
                 addonItem:JSON.stringify(finalAdd),
@@ -97,7 +96,7 @@ class CartController {
              
             // 
             if(isHere){
-                let tPrice = price;
+                let tPrice = xxx.priceAsli;
                 finalAdd.map(item => {tPrice = tPrice + parseInt(item.price)})
                 let priceAsli = tPrice;
                 tPrice = (isHere.count + 1) * tPrice
@@ -110,11 +109,19 @@ class CartController {
                     message:'سبد خرید با موفقیت آپدیت شد'
                 })
             }else{
-                let tPrice = price;
+                let tPrice = xxx.priceAsli;
                 finalAdd.map(item => {tPrice = tPrice + parseInt(item.price)})
                 let priceAsli = tPrice;
                 await CartModel.create({
-                    deviceId,p_name,productId,e_name,price,priceAsli,addonItem:JSON.stringify(finalAdd),count:1,totalPrice:tPrice
+                    deviceId,
+                    p_name:xxx.p_name,
+                    productId:xxx._id,
+                    e_name:xxx.e_name,
+                    price:xxx.priceAsli,priceAsli,
+                    addonItem:JSON.stringify(finalAdd),
+                    count:1,
+                    totalPrice:tPrice,
+                    discount:xxx.discount
                 })
 
                 return res.status(200).json({

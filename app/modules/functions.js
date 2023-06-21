@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const { UserModel } = require("../models/user");
 const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = require("../utils/constans");
 const { ProductModel } = require("../models/product");
+const moment = require('moment');
 
 
 function hashString(str){
@@ -160,6 +161,22 @@ async function checkCount(product,data,count){
     return x
 }
 
+function getAmountDiscount(discount,price){
+    let x = parseInt(price);
+    if(discount){
+        if(discount.type === "darsadi"){
+            x = (parseInt(price)/100) * parseInt(discount.value);
+        }else if(discount.type === "naghdi"){
+            x = parseInt(price) - parseInt(discount.value)
+        }
+    }else{
+        x = 0
+    }
+
+    return x
+}
+
+
 
 module.exports = {
     tokenGenerator,
@@ -175,5 +192,6 @@ module.exports = {
     VerifyRefreshToken,
     calcModesPrice,
     isEqual,
-    checkCount
+    checkCount,
+    getAmountDiscount
 }

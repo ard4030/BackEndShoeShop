@@ -9,9 +9,9 @@ class InitialController {
             // Initial Payment Methodes
             const Here = await PaymentMethodModel.remove();
             const savePaymentsMethod = await PaymentMethodModel.insertMany([
-               {name:'online',title:"پرداخت آنلاین",enable:true},
-               {name:'delivery',title:"پرداخت در محل",enable:false},
-               {name:'cardtocard',title:"کارت به کارت",enable:false},
+               {name:'online',title:"پرداخت آنلاین",enable:true,description:"برای تستس"},
+               {name:'delivery',title:"پرداخت در محل",enable:false,description:"شسیشسیشسی"},
+               {name:'cardtocard',title:"کارت به کارت",enable:false,description:"شسیشسیشسیش"},
             ]) 
             if(!savePaymentsMethod) throw {status:200,success:false,message:'در تنظیمات پرداخت خطایی رخ داده . لطفا با پشتیبانی فنی در ارتباط باشید'}
             
@@ -36,9 +36,9 @@ class InitialController {
             const Here = await PaymentMethodModel.remove();
             if(!Here) throw ERRORING;
             const savePaymentsMethod = await PaymentMethodModel.insertMany([
-               {name:'online',title:"پرداخت آنلاین",enable:true},
-               {name:'delivery',title:"پرداخت در محل",enable:false},
-               {name:'cardtocard',title:"کارت به کارت",enable:false},
+                {name:'online',title:"پرداخت آنلاین",enable:true,description:"برای تستس"},
+                {name:'delivery',title:"پرداخت در محل",enable:false,description:"شسیشسیشسی"},
+                {name:'cardtocard',title:"کارت به کارت",enable:false,description:"شسیشسیشسیش"},
             ]) 
             if(!savePaymentsMethod) throw {status:200,success:false,message:'در تنظیمات پرداخت خطایی رخ داده . لطفا با پشتیبانی فنی در ارتباط باشید'}
             

@@ -9,7 +9,7 @@ const { AddressModel } = require("../../../models/address");
 
 class OrderController {
 
-    async newOrder(req,res,next){
+    async getOrder(req,res,next){
         try {
 
             const deviceid = req.cookies['deviceId'];
@@ -99,7 +99,7 @@ class OrderController {
             }else{
                 res.status(200).json({
                     status:200,
-                    success:true,
+                    success:false,
                     data:null
                 })
             }
@@ -146,7 +146,6 @@ class OrderController {
             const result = await DiscountModel.findOne({code});
 
             if(result){
-
                 if(result.status !== 'publish') throw {status:200,success:false,message:'کد وارد شده غیر فعال است'}
 
                 // مقایسه تاریخ انقضا با تاریخ حال حاضر
@@ -156,16 +155,17 @@ class OrderController {
                     // کد تخفیف منقضی شده است
                     throw {status:200,success:false,message:'کد تخفیف وارد شده منقضی شده'}
                 } else {
-                    const upd =  await OrderModel.updateOne({userId:req.user._id,success:false},{
-                        $set:{
-                            discount:{price:parseInt(result.value),type:result.type},
-                        }
-                    })
+                    // const upd =  await OrderModel.updateOne({userId:req.user._id,success:false},{
+                    //     $set:{
+                    //         discount:{price:parseInt(result.value),type:result.type},
+                    //     }
+                    // })
                     // کد تخفیف هنوز معتبر است
                     return res.status(200).json({
                         status:200,
                         success:true,
                         message:'تخفیف با موفقیت لحاظ شد',
+                        data:result
                     })
                 }
             }else{
@@ -210,6 +210,20 @@ class OrderController {
         }
     }
 
+    async getPostPrice(req,res,next){
+        try {
+            const postPrice = 10;
+            return res.status(200).json({
+                success:true,
+                status:200,
+                data:postPrice
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    
 
 
 }

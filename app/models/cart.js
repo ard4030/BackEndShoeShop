@@ -10,7 +10,8 @@ const Schema = new mongoose.Schema({
     productId : {type : mongoose.Types.ObjectId,default:undefined , required:true},
     totalPrice : {type:Number,default:0},
     price : {type:Number,default:0},
-    deviceId:{type : mongoose.Types.ObjectId,default:undefined , required:true}
+    deviceId:{type : mongoose.Types.ObjectId,default:undefined , required:true},
+    discount:{type:Object}
     
 });
  
