@@ -6,6 +6,7 @@ const { OrderModel } = require("../../../models/order");
 const { ModesModel } = require("../../../models/modes");
 const { ProductModel } = require("../../../models/product");
 const { CommentModel } = require("../../../models/comment");
+const { UserModel } = require("../../../models/user");
 
 class ProductController {
 
@@ -383,6 +384,24 @@ class ProductController {
         } catch (error) {
             next(error)
         }
+    }
+
+    async getBooksProduct(req,res,next){
+      try {
+        const user = await UserModel.findById(req.user._id);
+        const bookmarks = user.bookmarks;
+        const products = await ProductModel.find({
+          _id: { $in: bookmarks }
+        });
+        if(!products) throw ERRORING;
+        return res.status(200).json({
+          status:200,
+          success:true,
+          data:products
+        })
+      } catch (error) {
+        next(error);
+      }
     }
  
 

@@ -223,6 +223,58 @@ class OrderController {
         }
     }
 
+    async getAllOrders(req,res,next){
+        try { 
+            let { page, size, sort,name } = req.body;
+            if (!page) {page = 1}
+            if (!size) {size = 10;}
+            const limit = parseInt(size);
+            if (!page) {page = 1}
+            const startIndex = (page - 1) * limit;
+            const endIndex = page * limit
+
+
+            const count = await OrderModel.count({userId:req.user._id})
+            const result = await OrderModel.aggregate([
+                {
+                    $match: {
+                      userId:req.user._id
+                    }
+                },
+                {
+                    $lookup:{
+                        from:"addresses",
+                        localField:"addressId",
+                        foreignField:"_id",
+                        as:"addres"
+                    }
+                },
+                {
+                    $lookup:{
+                        from:"paymentmethods",
+                        localField:"paymentMethod",
+                        foreignField:"_id",
+                        as:"payMethod"
+                    }
+                },
+                { $sort : {_id: -1 } },
+                { $limit : endIndex },
+                { $skip : startIndex }
+
+            ])
+            if(!result) throw ERRORING
+            res.status(200).json({
+                status:200,
+                success:true,
+                data:result,
+                page,
+                size,
+                count
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
     
 
 

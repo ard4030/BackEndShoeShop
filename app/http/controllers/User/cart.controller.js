@@ -121,7 +121,8 @@ class CartController {
                     addonItem:JSON.stringify(finalAdd),
                     count:1,
                     totalPrice:tPrice,
-                    discount:xxx.discount
+                    discount:xxx.discount,
+                    image:(xxx.images.length > 0) ? xxx.images[0] : ""
                 })
 
                 return res.status(200).json({

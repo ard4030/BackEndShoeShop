@@ -212,6 +212,63 @@ class PaymentController {
         }
     }
 
+    async getStatusOrders(req, res, next) {
+        try {
+          const result = await OrderModel.aggregate([
+            { $match: { userId: req.user._id } },
+            {
+              $group: {
+                _id: null,
+                pending: {
+                  $sum: {
+                    $cond: { if: { $eq: ['$status', 'pending'] }, then: 1, else: 0 },
+                  },
+                },
+                pay_complate: {
+                  $sum: {
+                    $cond: { if: { $eq: ['$status', 'pay_complate'] }, then: 1, else: 0 },
+                  },
+                },
+                wait_pay: {
+                  $sum: {
+                    $cond: { if: { $eq: ['$status', 'wait_pay'] }, then: 1, else: 0 },
+                  },
+                },
+                success: {
+                    $sum: {
+                      $cond: { if: { $eq: ['$status', 'success'] }, then: 1, else: 0 },
+                    },
+                },
+                cancellation: {
+                    $sum: {
+                      $cond: { if: { $eq: ['$status', 'cancellation'] }, then: 1, else: 0 },
+                    },
+                },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                pending: 1,
+                pay_complate: 1,
+                wait_pay:1,
+                success:1,
+                cancellation:1
+              },
+            },
+          ]);
+      
+          if (!result) throw ERRORING;
+          return res.status(200).json({
+            status: 200,
+            success: true,
+            data: result[0],
+          });
+        } catch (error) {
+          next(error);
+        }
+      }
+
     
 }
 

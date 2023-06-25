@@ -11,7 +11,8 @@ const Schema = new mongoose.Schema({
     totalPrice : {type:Number,default:0},
     price : {type:Number,default:0},
     deviceId:{type : mongoose.Types.ObjectId,default:undefined , required:true},
-    discount:{type:Object}
+    discount:{type:Object},
+    image : {type:String , default:""},
     
 });
  

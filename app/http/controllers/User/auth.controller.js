@@ -155,6 +155,22 @@ class AuthController {
         }
     }
 
+    async updateDetail(req,res,next){
+        try {
+            const {email,firts_name,last_name,address,city,postalCode} = req.body;
+            const result = await UserModel.updateOne({_id:req.user._id},{
+                $set:{email,firts_name,last_name,address,city,postalCode}
+            })
+            if(!result) throw ERRORING;
+            return res.status(200).json({
+                status:200,
+                success:true,
+                message:"اطلاعات با موفقیت ویرایش شد"
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
     
 
 

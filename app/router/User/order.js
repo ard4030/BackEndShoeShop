@@ -8,7 +8,7 @@ router.post("/createOrder",VerifyAccessToken,OrderController.createOrder)
 router.post("/checkDiscount",VerifyAccessToken,OrderController.checkDiscount) 
 router.post("/checkOrder",VerifyAccessToken,OrderController.checkOrder) 
 router.post("/getPostPrice",VerifyAccessToken,OrderController.getPostPrice) 
-
+router.post("/getAllOrders",VerifyAccessToken,OrderController.getAllOrders) 
 
 module.exports = {
     orderRouter : router

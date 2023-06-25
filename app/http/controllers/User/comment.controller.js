@@ -96,6 +96,33 @@ class CommentController {
         }
     }
 
+    async getCommentsUser(req,res,next){
+        try {
+            const result = await CommentModel.aggregate([
+                {
+                    $match :{userId:req.user._id}
+                },
+                {
+                    $lookup : {
+                        from:"products",
+                        localField:"productId",
+                        foreignField:"_id",
+                        as:"product"
+                    }
+                }
+            ])
+
+            if(!result) throw ERRORING;
+            return res.status(200).json({
+                status:200,
+                success:true,
+                data:result
+            })
+        } catch (error) {
+            next(error)
+        }
+    }
+
 }
 
 module.exports = {

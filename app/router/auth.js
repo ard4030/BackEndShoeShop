@@ -10,6 +10,9 @@ router.post("/checkOtp",numberValidator(),expressValidatorMapper,AuthController.
 router.get("/isLogin",VerifyAccessToken,AuthController.isLogin)
 router.get("/logOut",VerifyAccessToken,AuthController.logOut)
 router.get("/david",AuthController.david)
+router.post("/updateDetail",VerifyAccessToken,AuthController.updateDetail)
+
+
 
 module.exports = {
     authRouter : router

@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const { AddressModel } = require("../../../models/address");
 const { ERRORING } = require("../../../utils/constans");
 
@@ -45,8 +46,9 @@ class AddressController {
 
     async updateAddress(req,res,next){
         try {
+            
             const {ostanCode,cityCode,ostanName,cityName,name,mobile,postalCode,plak,description,id,lat,lang} = req.body;
-            const result = await AddressModel.updateOne({userId:req.user._id,_id:id},{$set:{
+            const result = await AddressModel.updateOne({userId:req.user._id,_id:mongoose.Types.ObjectId(id)},{$set:{
                 ostanCode,cityCode,ostanName,cityName,name,mobile,postalCode,plak,description,lat,lang
             }})
             if(!result) throw ERRORING

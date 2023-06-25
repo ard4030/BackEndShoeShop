@@ -5,6 +5,7 @@ const Schema = new mongoose.Schema({
     last_name : {type:String , default:""},
     city : {type:String , default:""},
     address : {type:String , default:""},
+    postalCode : {type:String , default:""},
     mobile : {type:String,required : true},
     email : {type:String, lowercase:true},
     password : {type:String},
@@ -19,6 +20,8 @@ const Schema = new mongoose.Schema({
     Roles : {type:[String] , default:['USER']},
     bookmarks : {type : [mongoose.Types.ObjectId], default : []},
 
+},{
+    timestamps:true
 });
  
 module.exports = {
